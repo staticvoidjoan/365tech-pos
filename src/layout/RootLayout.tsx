@@ -1,9 +1,11 @@
 import { Outlet } from "react-router";
-import { Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+import InvoiceBar from "./InvoiceBar";
 export default function RootLayout() {
   return (
-    <Box>
+    <Flex overflow={"hidden"}>
       <Outlet />
-    </Box>
+      <InvoiceBar />
+    </Flex>
   );
 }
