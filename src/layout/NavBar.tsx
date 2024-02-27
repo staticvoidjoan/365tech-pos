@@ -14,7 +14,7 @@ import SideBar from "./SideBar";
 import { useRef } from "react";
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef<HTMLButtonElement | null>();
+  const btnRef = useRef<HTMLButtonElement | null>(null);
   return (
     <>
       <SideBar isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
