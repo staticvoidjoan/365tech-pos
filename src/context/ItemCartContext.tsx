@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 //Define the type for a single item in the cart
 
