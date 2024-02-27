@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-
+import { useLocalStorage } from "../hooks/useLocalStorage";
 //Define the type for a single item in the cart
 
 type CartItem = {
@@ -32,7 +32,10 @@ type ItemCartProviderProps = {
 
 export function ItemCartProvider({ children }: ItemCartProviderProps) {
   //State to manage cart items
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>(
+    "items-cart",
+    []
+  );
 
   //Function to get the item quantity
   function getItemQuantity(id: number) {

@@ -7,12 +7,14 @@ import {
 import RootLayout from "./layout/RootLayout";
 import { ItemCartProvider } from "./context/ItemCartContext";
 import DashBoard from "./layout/DashBoard";
+import Products from "./pages/Products";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route index element={<DashBoard />} />
+        <Route path="/products" element={<Products />} />
       </Route>
     )
   );

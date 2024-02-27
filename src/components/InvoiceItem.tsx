@@ -1,12 +1,23 @@
 import { useItemCart } from "../context/ItemCartContext";
 import { formatCurrency } from "../utlities/formatCurrency";
 import dummyData from "../data/dummyData.json";
-import { Stack, Button, Image, Box, Text } from "@chakra-ui/react";
+import {
+
+  Button,
+  Image,
+  Box,
+  Text,
+  HStack,
+  Flex,
+} from "@chakra-ui/react";
 import itemFallback from "../assets/itemFallback.svg";
+import Transition from "../Transition";
+
 type InvoiceItemProps = {
   id: number;
   quantity: number;
 };
+
 
 export function InvoiceItem({ id, quantity }: InvoiceItemProps) {
   const { removeFromCart } = useItemCart();
@@ -14,24 +25,49 @@ export function InvoiceItem({ id, quantity }: InvoiceItemProps) {
   if (item == null) {
     return null;
   }
-
+  const totalPrice = item.price * quantity;
   return (
-    <Stack dir="horizontal" gap={2} alignItems={"center"}>
+    <Transition>
+
+    <Box
+      border="1px solid #2D3748"
+      borderRadius="md"
+      padding={5}
+      marginBottom="2"
+      display="flex"
+      alignItems="center"
+      
+      >
       <Image
         src={itemFallback}
-        width={"20%"}
-      />
-      <Box marginEnd={"auto"}>
+        boxSize="80px"
+        borderRadius="md"
+        marginRight="4"
+        />
+
+      <Flex flex="1" justifyContent="space-between" alignItems="center">
         <Box>
-          {item.name}
-          {quantity > 1 && (
-            <Text fontSize={".65rem"} color={"gray"}>
-              x {quantity}
+          <HStack>
+            <Text fontSize="lg" fontWeight="bold">
+              {item.name}
             </Text>
-          )}
-          <Text>{formatCurrency(item.price, "ALL")}</Text>
+            {quantity >= 1 && (
+              <Text fontSize="sm" color="gray.500">
+                x {quantity}
+              </Text>
+            )}
+          </HStack>
+          <Text fontSize="md">{formatCurrency(item.price, "ALL")}</Text>
+          <Text fontSize="lg" fontWeight="bold">
+            {formatCurrency(totalPrice, "ALL")}
+          </Text>
         </Box>
-      </Box>
-    </Stack>
+
+        <Button onClick={() => removeFromCart(id)} colorScheme="red" size="sm">
+          Remove
+        </Button>
+      </Flex>
+    </Box>
+            </Transition>
   );
 }
