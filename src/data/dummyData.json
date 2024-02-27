@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "USB-C to USB-A Cable",
+    "price": 1109
+  },
+  {
+    "id": 2,
+    "name": "Wireless Mouse",
+    "price": 1913
+  },
+  {
+    "id": 3,
+    "name": "Bluetooth Keyboard",
+    "price": 2723
+  },
+  {
+    "id": 4,
+    "name": "HDMI to VGA Adapter",
+    "price": 1508
+  },
+  {
+    "id": 5,
+    "name": "USB-C Hub",
+    "price": 2335
+  },
+  {
+    "id": 6,
+    "name": "Wireless Earbuds",
+    "price": 3463
+  },
+  {
+    "id": 7,
+    "name": "Portable Power Bank",
+    "price": 2862
+  },
+  {
+    "id": 8,
+    "name": "USB Flash Drive (64GB)",
+    "price": 1723
+  },
+  {
+    "id": 9,
+    "name": "Laptop Cooling Pad",
+    "price": 2090
+  },
+  {
+    "id": 10,
+    "name": "Phone Stand",
+    "price": 897
+  },
+  {
+    "id": 11,
+    "name": "Wireless Charging Pad",
+    "price": 3463
+  },
+  {
+    "id": 12,
+    "name": "Gaming Mousepad",
+    "price": 1673
+  },
+  {
+    "id": 13,
+    "name": "USB-C to HDMI Cable",
+    "price": 2240
+  },
+  {
+    "id": 14,
+    "name": "Smartphone Camera Lens Kit",
+    "price": 1970
+  },
+  {
+    "id": 15,
+    "name": "External Hard Drive (1TB)",
+    "price": 6973
+  },
+  {
+    "id": 16,
+    "name": "USB Desktop Fan",
+    "price": 1090
+  },
+  {
+    "id": 17,
+    "name": "Wireless Presenter",
+    "price": 3043
+  },
+  {
+    "id": 18,
+    "name": "Screen Cleaning Kit",
+    "price": 950
+  },
+  {
+    "id": 19,
+    "name": "USB LED Lamp",
+    "price": 823
+  },
+  {
+    "id": 20,
+    "name": "Travel Router",
+    "price": 4763
+  }
+]
