@@ -6,9 +6,10 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  Heading,
   Avatar,
   Text,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 export default function SideBar({
@@ -32,12 +33,49 @@ export default function SideBar({
         <DrawerCloseButton />
         <DrawerHeader>365Tech.POS</DrawerHeader>
         <DrawerBody gap={"2rem"}>
-          <NavLink to={"/"}>
-            <Heading>Dashboard</Heading>
-          </NavLink>
-          <NavLink to={"/products"}>
-            <Heading>Produkte</Heading>
-          </NavLink>
+          <List fontSize={"1.5rem"} fontWeight={"400"} spacing={5} mt={5}>
+            <ListItem>
+              <NavLink to={"/"}>
+                <Text
+                  _hover={{ borderBottom: "solid 1px black" }}
+                  w={"fit-content"}
+                >
+                  Dashboard
+                </Text>
+              </NavLink>
+            </ListItem>
+            <ListItem>
+              <NavLink to={"/inventory"}>
+                <Text
+                  _hover={{ borderBottom: "solid 1px black" }}
+                  w={"fit-content"}
+                >
+                  Inventari
+                </Text>
+              </NavLink>
+            </ListItem>
+            <ListItem>
+              <NavLink to={"/"}>
+                <Text
+                  _hover={{ borderBottom: "solid 1px black" }}
+                  whiteSpace={"nowrap"}
+                  w={"fit-content"}
+                >
+                  Raporti i Shitjeve
+                </Text>
+              </NavLink>
+            </ListItem>
+            <ListItem>
+              <NavLink to={"/"}>
+                <Text
+                  _hover={{ borderBottom: "solid 1px black" }}
+                  w={"fit-content"}
+                >
+                  Klientet
+                </Text>
+              </NavLink>
+            </ListItem>
+          </List>
         </DrawerBody>
         <DrawerFooter justifyContent={"space-between"}>
           <Avatar></Avatar>

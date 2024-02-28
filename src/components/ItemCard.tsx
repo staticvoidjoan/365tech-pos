@@ -17,7 +17,7 @@ import itemFallback from "../assets/itemFallback.svg";
 import { formatCurrency } from "../utlities/formatCurrency";
 
 type ItemCardProps = {
-  id: number;
+  id: string;
   name: string;
   price: number;
 };
@@ -64,7 +64,9 @@ export default function ItemCard({ id, name, price }: ItemCardProps) {
                 +
               </Button>
             </Flex>
-            <Button onClick={() => removeFromCart(id)} colorScheme="red">Remove</Button>
+            <Button onClick={() => removeFromCart(id)} colorScheme="red">
+              Remove
+            </Button>
           </Flex>
         )}
       </CardFooter>
