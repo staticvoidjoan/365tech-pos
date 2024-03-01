@@ -10,11 +10,14 @@ import DashBoard from "./layout/DashBoard";
 import Products from "./pages/Products";
 import { Product } from "./utlities/types";
 import Inventory from "./layout/Inventory";
+import SalesHistory from "./layout/SalesHistory";
 
 async function productLoader() {
-  const response = await fetch("http://localhost:5000/products");
-  const data: Product = await response.json();
-  return data;
+  try {
+    const response = await fetch("http://localhost:5000/products");
+    const data: Product = await response.json();
+    return data;
+  } catch (error) {}
 }
 
 function App() {
@@ -27,6 +30,7 @@ function App() {
           element={<Inventory />}
           loader={productLoader}
         />
+        <Route path="/invoices" element={<SalesHistory />} />
         <Route path="/products" element={<Products />} />
       </Route>
     )

@@ -14,7 +14,6 @@ import {
 import { useItemCart } from "../context/ItemCartContext";
 import { formatCurrency } from "../utlities/formatCurrency";
 // import dummyData from "../data/dummyData.json";
-import { InvoiceGenerator } from "../components/InvoiceGenerator";
 import axios from "axios";
 import { InvoiceItem } from "../components/InvoiceItem";
 import {
@@ -24,7 +23,7 @@ import {
   BsTrash,
   BsCart4,
 } from "react-icons/bs";
-import { format } from "date-fns";
+import { format, sub } from "date-fns";
 import pos from "../assets/pos.svg";
 import { Product } from "../utlities/types";
 import { useEffect, useState } from "react";
@@ -44,7 +43,7 @@ export default function InvoiceBar({
   }, 0);
   const [time, setTime] = useState(new Date());
   const [faturaFinal, setFaturaFinal] = useState({});
-  const [produktet, setProduktet] = useState([]);
+  // const [produktet, setProduktet] = useState([]);
   const finalPrice = tvshCalculator(totalPrice);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const totalInvoicePrice = formatCurrency(totalPrice, "ALL");
@@ -90,10 +89,11 @@ export default function InvoiceBar({
           `http://localhost:5000/getProductsByIds?ids=${arrayofIds.join(",")}`
         );
 
-        setProduktet(response.data);
+        // setProduktet(response.data);
         const fetchedProducts = response.data;
         // Construct the produkte array with product data
         const produkte = fetchedProducts.map((product: any) => ({
+          id: product._id,
           name: product.name,
           description: product.description,
           barcode: product.barcode,
@@ -101,6 +101,8 @@ export default function InvoiceBar({
           quantity: fatura.find((item: any) => item._id === product._id)
             .quantity,
         }));
+        const productIDs = produkte.map((product: any) => product.id);
+
         const data = {
           totalPrice: totalPrice,
           tvsh: finalPrice.tvsh,
@@ -110,6 +112,23 @@ export default function InvoiceBar({
           ora: formattedTime,
           paymentMethod: activeButton,
         };
+        console.log(data);
+
+        const faturaCloud = {
+          invoiceNumber: `${formattedDate}-${invoiceNumber}`,
+          products: productIDs,
+          subtotal: finalPrice.subtotal,
+          tvsh: finalPrice.tvsh,
+          total: totalPrice,
+          paymentMethod: activeButton,
+        };
+        console.log(faturaCloud);
+        const responseCloud = await axios.post(
+          "http://localhost:5000/invoices",
+          faturaCloud
+        );
+        console.log(responseCloud);
+
         setFaturaFinal(data);
         setInvoiceNumber((currVal) => currVal + 1);
         onOpen();
@@ -145,7 +164,13 @@ export default function InvoiceBar({
           <Text fontSize="1.5rem" fontWeight={"bold"}>
             {formattedDate}
           </Text>
-          <Badge variant="outline" colorScheme="green" fontSize={"1rem"}>
+          <Badge
+            variant="outline"
+            colorScheme="green"
+            fontSize={"1rem"}
+            borderRadius={"8px"}
+            px={2}
+          >
             {formattedTime}
           </Badge>
         </HStack>
@@ -182,9 +207,11 @@ export default function InvoiceBar({
       </Button>
       <Stack>
         <Stack
-          bg={"gray.400"}
+          bg={"gray.300"}
+          boxShadow={"xl"}
           color={"white"}
           padding={5}
+          mb={5}
           borderRadius={"2rem"}
         >
           <Heading>
@@ -193,7 +220,7 @@ export default function InvoiceBar({
           <Heading size={"sm"}>
             Subtotal: {formatCurrency(finalPrice.subtotal, "ALL") || 0}
           </Heading>
-          <Text size={"sm"} color={"gray.300"}>
+          <Text size={"sm"} color={"gray.500"}>
             TVSH(20%): {formatCurrency(finalPrice.tvsh, "ALL") || 0}
           </Text>
           <Heading size={"md"}>Pagesa:</Heading>

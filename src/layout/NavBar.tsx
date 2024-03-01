@@ -8,14 +8,17 @@ import {
   InputGroup,
   InputLeftAddon,
   useDisclosure,
+  Select,
+  Spacer,
 } from "@chakra-ui/react";
+import { MdCurrencyExchange } from "react-icons/md";
 import { SearchIcon } from "@chakra-ui/icons";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import SideBar from "./SideBar";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { searchProductByName } from "./your-api-file-path"; // Update the path accordingly
 import axios from "axios";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
 import { NavLink } from "react-router-dom";
 export default function NavBar({
   setProductData,
@@ -25,6 +28,13 @@ export default function NavBar({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(
+    localStorage.getItem("selectedCurrency") || "ALL"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("selectedCurrency", selectedCurrency);
+  }, [selectedCurrency,]);
 
   const handleSearch = async () => {
     try {
@@ -43,11 +53,10 @@ export default function NavBar({
   return (
     <>
       <SideBar isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
-      <Flex as="nav" p={5} bg={"gray.200"} gap={"5rem"}>
+      <Flex as="nav" p={5} bg={"gray.200"} gap={"5rem"} alignItems={"center"}>
         <HStack>
-          <NavLink to={"/"} style={{width:"70%", padding:5}} >
+          <NavLink to={"/"} style={{ width: "70%", padding: 5 }}>
             <Image src={logo} />
-  
           </NavLink>
           <Button ref={btnRef} onClick={onOpen}>
             <HamburgerIcon />
@@ -71,6 +80,21 @@ export default function NavBar({
             }}
           />
         </InputGroup>
+        <Spacer />
+        <HStack>
+          <MdCurrencyExchange size={35} />
+          <Select
+            color={"black"}
+            maxW={"150px"}
+            value={selectedCurrency}
+            variant={"filled"}
+            onChange={(e) => setSelectedCurrency(e.target.value)}
+          >
+            <option value="ALL">ALL</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+          </Select>
+        </HStack>
       </Flex>
     </>
   );

@@ -18,9 +18,42 @@ import {
 import QRCode from "react-qr-code";
 import { formatCurrency } from "../utlities/formatCurrency";
 export default function InvoiceModal({ isOpen, onClose, data }: any) {
-  const paymentType =
-    data && data.paymentMethod ? data.paymentMethod.toUpperCase() : "";
+  if (!data) return null; // Handle case where data is undefined
+
+  const paymentType = data.paymentMethod
+    ? data.paymentMethod.toUpperCase()
+    : "";
   const invoiceNumber = localStorage.getItem("invoiceNumber");
+
+  // Format data for QR code
+  const formattedData = `
+    Invoice #: ${invoiceNumber}
+    -------------------------------------
+    Product           Description           Price    Quantity    Total
+    -------------------------------------
+    ${
+      data.produkte && Array.isArray(data.produkte)
+        ? data.produkte
+            .map(
+              (produkt: any) => `
+        ${produkt.name.padEnd(16)} ${produkt.description.padEnd(
+                21
+              )} ${produkt.price.toString().padEnd(9)} ${produkt.quantity
+                .toString()
+                .padEnd(11)} ${(produkt.price * produkt.quantity).toString()}
+      `
+            )
+            .join("\n")
+        : ""
+    }
+    -------------------------------------
+    Subtotal: ${formatCurrency(data.subtotal || 0, "ALL")}
+    TVSH 20%: ${formatCurrency(data.tvsh || 0, "ALL")}
+    Total: ${formatCurrency(data.totalPrice || 0, "ALL")}
+    Date: ${data.data || ""}
+    Time: ${data.ora || ""}
+    Payment Method: ${paymentType}
+  `;
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -82,7 +115,7 @@ export default function InvoiceModal({ isOpen, onClose, data }: any) {
           </Table>
         </ModalBody>
         <HStack justifyContent={"center"}>
-          <QRCode value={"keisi esht budallaqe dhe bufe"} size={200} />
+          <QRCode value={formattedData} size={200} />
         </HStack>
         <ModalFooter>365TechPos.AL ©</ModalFooter>
       </ModalContent>

@@ -55,13 +55,13 @@ export default function SideBar({
               </NavLink>
             </ListItem>
             <ListItem>
-              <NavLink to={"/"}>
+              <NavLink to={"/invoices"}>
                 <Text
                   _hover={{ borderBottom: "solid 1px black" }}
                   whiteSpace={"nowrap"}
                   w={"fit-content"}
                 >
-                  Raporti i Shitjeve
+                  Historiku i Shitjeve
                 </Text>
               </NavLink>
             </ListItem>
@@ -78,7 +78,7 @@ export default function SideBar({
           </List>
         </DrawerBody>
         <DrawerFooter justifyContent={"space-between"}>
-          <Avatar></Avatar>
+          <Avatar name="shitesi" bg={"black"}></Avatar>
           <Text>365tech@gmail.com</Text>
         </DrawerFooter>
       </DrawerContent>

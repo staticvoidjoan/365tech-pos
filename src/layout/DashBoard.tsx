@@ -16,6 +16,9 @@ export default function DashBoard() {
     }, 500); // Adjust the loading time as needed
   }, [products]);
 
+
+
+  
   return (
     <Box position="relative" flex={"2"} bg={"#fbfbfb"}>
       <NavBar setProductData={setProductData} />
