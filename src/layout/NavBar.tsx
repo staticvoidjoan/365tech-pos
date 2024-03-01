@@ -3,6 +3,7 @@ import {
   Flex,
   HStack,
   Heading,
+  Image,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -14,6 +15,8 @@ import SideBar from "./SideBar";
 import { useRef, useState } from "react";
 // import { searchProductByName } from "./your-api-file-path"; // Update the path accordingly
 import axios from "axios";
+import logo from "../assets/logo.png"
+import { NavLink } from "react-router-dom";
 export default function NavBar({
   setProductData,
 }: {
@@ -40,20 +43,24 @@ export default function NavBar({
   return (
     <>
       <SideBar isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
-      <Flex as="nav" p={5} bg={"gray.300"} gap={"5rem"}>
+      <Flex as="nav" p={5} bg={"gray.200"} gap={"5rem"}>
         <HStack>
-          <Heading>365Tech.POS</Heading>
+          <NavLink to={"/"} style={{width:"70%", padding:5}} >
+            <Image src={logo} />
+  
+          </NavLink>
           <Button ref={btnRef} onClick={onOpen}>
             <HamburgerIcon />
           </Button>
         </HStack>
 
-        <InputGroup maxW={"500px"}>
+        <InputGroup maxW={"500px"} alignItems={"center"}>
           <InputLeftAddon onClick={handleSearch} style={{ cursor: "pointer" }}>
             <SearchIcon />
           </InputLeftAddon>
           <Input
-            type="tel"
+            variant={"filled"}
+            type="text"
             placeholder="Search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

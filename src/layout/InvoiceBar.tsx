@@ -9,10 +9,13 @@ import {
   Spacer,
   Image,
   Badge,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useItemCart } from "../context/ItemCartContext";
 import { formatCurrency } from "../utlities/formatCurrency";
 // import dummyData from "../data/dummyData.json";
+import { InvoiceGenerator } from "../components/InvoiceGenerator";
+import axios from "axios";
 import { InvoiceItem } from "../components/InvoiceItem";
 import {
   BsCash,
@@ -26,6 +29,8 @@ import pos from "../assets/pos.svg";
 import { Product } from "../utlities/types";
 import { useEffect, useState } from "react";
 import { tvshCalculator } from "../utlities/tvshCalculator";
+import InvoiceModal from "../components/InvoiceModal";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export default function InvoiceBar({
   productsData,
@@ -38,8 +43,10 @@ export default function InvoiceBar({
     return total + (item?.price || 0) * cartItem.quantity;
   }, 0);
   const [time, setTime] = useState(new Date());
+  const [faturaFinal, setFaturaFinal] = useState({});
+  const [produktet, setProduktet] = useState([]);
   const finalPrice = tvshCalculator(totalPrice);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const totalInvoicePrice = formatCurrency(totalPrice, "ALL");
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -50,28 +57,88 @@ export default function InvoiceBar({
   const currentDate: Date = new Date();
   const formattedDate: string = format(currentDate, "dd MMMM yyyy");
   const formattedTime: string = format(time, "HH:mm:ss");
-
-  const [activeButton, setActiveButton] = useState<string | null>(null);
+  const [invoiceNumber, setInvoiceNumber] = useLocalStorage<number>(
+    "invoiceNumber",
+    1
+  );
+  const [activeButton, setActiveButton] = useState<string | null>("cash");
   const handleButtonClick = (buttonName: string) => {
     setActiveButton(buttonName === activeButton ? null : buttonName);
+  };
+
+  //Use effect to reset the invoice number on a daily basis
+  useEffect(() => {
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, "yyyy-MM-dd");
+    const storedDate = localStorage.getItem("resetDate");
+    if (!storedDate || storedDate !== formattedDate) {
+      setInvoiceNumber(0);
+      localStorage.setItem("resetDate", formattedDate);
+    }
+  }, []);
+
+  const startPrinting = async () => {
+    const storedData: string | null = localStorage.getItem("items-cart");
+    if (storedData === null) {
+      console.log("Cart is empty");
+    }
+    try {
+      const fatura: any = JSON.parse(storedData as string);
+      if (Array.isArray(fatura)) {
+        const arrayofIds: string[] = fatura.map((obj: any) => obj._id);
+        const response = await axios.get(
+          `http://localhost:5000/getProductsByIds?ids=${arrayofIds.join(",")}`
+        );
+
+        setProduktet(response.data);
+        const fetchedProducts = response.data;
+        // Construct the produkte array with product data
+        const produkte = fetchedProducts.map((product: any) => ({
+          name: product.name,
+          description: product.description,
+          barcode: product.barcode,
+          price: product.price,
+          quantity: fatura.find((item: any) => item._id === product._id)
+            .quantity,
+        }));
+        const data = {
+          totalPrice: totalPrice,
+          tvsh: finalPrice.tvsh,
+          produkte: produkte,
+          subtotal: finalPrice.subtotal,
+          data: formattedDate,
+          ora: formattedTime,
+          paymentMethod: activeButton,
+        };
+        setFaturaFinal(data);
+        setInvoiceNumber((currVal) => currVal + 1);
+        onOpen();
+        emptyCart();
+      } else {
+        console.error("Data in local storage is not an array");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Flex
       flex={1}
       overflow={"auto"}
-      bg={"gray.300"}
+      bg={"gray.200"}
       p={5}
       flexDir={"column"}
       justifyContent={"flex-start"}
       maxH={"100vh"}
       gap={5}
     >
+      <InvoiceModal isOpen={isOpen} onClose={onClose} data={faturaFinal} />
       <VStack align="flex-start" marginBottom="4">
         <HStack alignItems={"center"}>
           <BsCart4 size={35} />
           <Heading as="h1" size="lg">
-            Fatura #1
+            Fatura #{invoiceNumber}
           </Heading>
         </HStack>
         <HStack>
@@ -81,7 +148,6 @@ export default function InvoiceBar({
           <Badge variant="outline" colorScheme="green" fontSize={"1rem"}>
             {formattedTime}
           </Badge>
-  
         </HStack>
       </VStack>
       <Stack
@@ -115,8 +181,15 @@ export default function InvoiceBar({
         <BsTrash size={34} />
       </Button>
       <Stack>
-        <Stack bg={"gray"} color={"white"} padding={5} borderRadius={"2rem"}>
-          <Heading>Total: {totalInvoicePrice}</Heading>
+        <Stack
+          bg={"gray.400"}
+          color={"white"}
+          padding={5}
+          borderRadius={"2rem"}
+        >
+          <Heading>
+            Total:<span style={{ color: "teal" }}>{totalInvoicePrice}</span>{" "}
+          </Heading>
           <Heading size={"sm"}>
             Subtotal: {formatCurrency(finalPrice.subtotal, "ALL") || 0}
           </Heading>
@@ -158,8 +231,9 @@ export default function InvoiceBar({
           width={"100%"}
           height="5rem"
           borderRadius={"1rem"}
-          colorScheme="green"
+          colorScheme="teal"
           gap={"1rem"}
+          onClick={startPrinting}
         >
           <Text fontSize={"1.8rem"} fontWeight={"bold"}>
             Printo

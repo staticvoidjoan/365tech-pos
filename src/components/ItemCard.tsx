@@ -31,7 +31,7 @@ export default function ItemCard({ id, name, price }: ItemCardProps) {
   } = useItemCart();
   const quantity = getItemQuantity(id);
   return (
-    <Card maxW={"sm"}>
+    <Card maxW={"sm"} borderRadius={"50px"} bg={"gray.100"} boxShadow={"md"} m={1}>
       <CardBody>
         <Stack mt={6} spacing={3} alignItems={"center"}>
           <Image src={itemFallback} width={"50%"} />

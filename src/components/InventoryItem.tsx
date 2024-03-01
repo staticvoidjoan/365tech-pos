@@ -1,25 +1,51 @@
-// import { useItemCart } from "../context/ItemCartContext";
 import {
   Card,
-  //   CardHeader,
   CardBody,
   CardFooter,
   Image,
   Button,
-  //   Heading,
-  Stack,
+  Box,
   Text,
   HStack,
   Divider,
+  Spacer,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  VStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Flex,
+  FormControl,
+  FormLabel,
+  InputGroup,
+  InputLeftAddon,
+  Input,
 } from "@chakra-ui/react";
 import axios from "axios";
 import itemFallback from "../assets/itemFallback.svg";
 import { formatCurrency } from "../utlities/formatCurrency";
 import { BsTrash } from "react-icons/bs";
+import Barcode from "react-barcode";
+import { BsPencil } from "react-icons/bs";
 type ItemCardProps = {
   id: string;
   name: string;
   price: number;
+  description?: string;
+  barcode?: number;
   setProductData: any;
 };
 
@@ -27,11 +53,13 @@ export default function IneventoryItem({
   id,
   name,
   price,
+  description,
+  barcode,
   setProductData,
 }: ItemCardProps) {
   const deleteProduct = async () => {
     try {
-      console.log(id);
+      // console.log(id);
       const repsonse = await axios.delete(
         `http://localhost:5000/productdelete/${id}`
       );
@@ -42,23 +70,134 @@ export default function IneventoryItem({
       console.log(error);
     }
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Card maxW={"sm"}>
-      <CardBody>
-        <Stack mt={6} spacing={3} alignItems={"center"}>
-          <Image src={itemFallback} width={"50%"} />
-          <HStack alignContent={"space-between"}>
-            <Text fontWeight={"bold"}>{name}</Text>
-            <Text color={"gray"}>{formatCurrency(price, "ALL")}</Text>
+    <>
+      <Popover>
+        <PopoverContent boxShadow={"4px 4px 15px black"}>
+          <PopoverArrow />
+          <PopoverCloseButton />
+          <PopoverHeader fontWeight={"bold"} fontSize={"1.5rem"}>
+            Confirmation!
+          </PopoverHeader>
+          <PopoverBody>
+            <VStack>
+              <Text>Are you sure you want to delete this product?</Text>
+              <Button colorScheme="red" onClick={deleteProduct}>
+                Delete
+              </Button>
+            </VStack>
+          </PopoverBody>
+        </PopoverContent>
+        <Card boxShadow="md" borderRadius="lg" overflow="hidden">
+          <HStack justifyContent={"center"}>
+            <Image
+              src={itemFallback}
+              alt={name}
+              width="30%"
+              maxHeight="200px"
+            />
           </HStack>
-        </Stack>
-      </CardBody>
-      <Divider />
-      <CardFooter justify={"center"}>
-        <Button colorScheme="red" onClick={deleteProduct}>
-          <BsTrash size={30} />
-        </Button>
-      </CardFooter>
-    </Card>
+          <CardBody>
+            <Box textAlign="center" mb={2}>
+              <Text fontWeight="bold" fontSize="lg">
+                {name}
+              </Text>
+              <Text color="gray.600">{description}</Text>
+            </Box>
+            <Divider />
+            <HStack justify="space-between" mt={3}>
+              <Text fontSize="lg" fontWeight={"bold"}>
+                {formatCurrency(price, "ALL")}
+              </Text>
+              {barcode && (
+                <Barcode value={barcode.toString()} width={1} height={40} />
+              )}
+            </HStack>
+
+            <Divider />
+          </CardBody>
+          <CardFooter justifyContent="center">
+            <Spacer />
+            <Button colorScheme="green" size={"lg"} gap={3} onClick={onOpen}>
+              Edit
+              <BsPencil size={24} />
+            </Button>
+            <Spacer />
+            <PopoverTrigger>
+              <Button
+                colorScheme="red"
+                //  onClick={deleteProduct}
+                size="lg"
+              >
+                <BsTrash size={24} />
+              </Button>
+            </PopoverTrigger>
+          </CardFooter>
+        </Card>
+      </Popover>
+
+      <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>New Product</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Flex direction="column">
+                <FormControl>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    placeholder="Product Name"
+                    value={name}
+                    name="name"
+                    required
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Price</FormLabel>
+                  <InputGroup>
+                    <InputLeftAddon>ALL</InputLeftAddon>
+                    <Input
+                      placeholder="Product Price"
+                      value={price}
+                      name="price"
+                      required
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Description</FormLabel>
+                  <Input
+                    placeholder="Product Description"
+                    value={description}
+                    name="description"
+                    required
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Barcode</FormLabel>
+                  <Input
+                    placeholder="Barcode"
+                    value={barcode}
+                    name="barcode"
+                    minLength={12}
+                    maxLength={12}
+                  />
+                  <Barcode value={barcode.toString()} width={1} height={40} />
+                </FormControl>
+              </Flex>
+            </ModalBody>
+
+            <ModalFooter gap={5}>
+              <Button colorScheme="teal">Create Product</Button>
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    </>
   );
 }

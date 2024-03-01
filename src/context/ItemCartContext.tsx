@@ -16,6 +16,7 @@ type ItemCartContextType = {
   cartQuantity: number;
   cartItems: CartItem[];
   emptyCart: () => void;
+  setCartQuantity: (id: string, ammount: number) => void;
 };
 
 //Create a context for our item cart functionality
@@ -87,6 +88,31 @@ export function ItemCartProvider({ children }: ItemCartProviderProps) {
     });
   }
 
+  function setCartQuantity(id: string, amount: number) {
+    if (amount === 0) {
+      setCartItems((currentItem) =>
+        currentItem.filter((item) => item._id !== id)
+      );
+    }
+    setCartItems((currentItems) => {
+      if (currentItems.find((item) => item._id === id) == null) {
+        //If the item is not already in the cart, add it with the quantity of 1
+        return [...currentItems];
+      } else {
+        //Map through all the items and check
+        return currentItems.map((item) => {
+          if (item._id === id) {
+            //If the id matches, create a new item object and increase the quantity by 1
+            return { ...item, quantity: (item.quantity = amount) };
+          } else {
+            //If the id does not match, return the item as is
+            return item;
+          }
+        });
+      }
+    });
+  }
+
   //Function to remove a specific item from the cart
   function removeFromCart(id: string) {
     //Update the cart items using the setCartItems
@@ -117,6 +143,7 @@ export function ItemCartProvider({ children }: ItemCartProviderProps) {
         cartQuantity,
         removeFromCart,
         emptyCart,
+        setCartQuantity,
       }}
     >
       {children}
