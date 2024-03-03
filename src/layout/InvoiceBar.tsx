@@ -10,49 +10,56 @@ import {
   Image,
   Badge,
   useDisclosure,
-} from "@chakra-ui/react";
-import { useItemCart } from "../context/ItemCartContext";
-import { formatCurrency } from "../utlities/formatCurrency";
-// import dummyData from "../data/dummyData.json";
-import axios from "axios";
-import { InvoiceItem } from "../components/InvoiceItem";
+} from "@chakra-ui/react"; //Chakra ui imports
 import {
   BsCash,
   BsCreditCard,
   BsCurrencyBitcoin,
   BsTrash,
   BsCart4,
-} from "react-icons/bs";
-import { format, sub } from "date-fns";
+} from "react-icons/bs"; //Icon imports
+
+//Asset imports
 import pos from "../assets/pos.svg";
-import { Product } from "../utlities/types";
-import { useEffect, useState } from "react";
+
+//Utils
+import { formatCurrency } from "../utlities/formatCurrency";
+import axios from "axios";
+import { format, sub } from "date-fns";
 import { tvshCalculator } from "../utlities/tvshCalculator";
-import InvoiceModal from "../components/InvoiceModal";
+
+//Context
+import { useItemCart } from "../context/ItemCartContext";
+
+//Hooks
+import { useEffect, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { Product } from "../utlities/types";
+
+//Components
+import { InvoiceItem } from "../components/InvoiceItem";
+import InvoiceModal from "../components/InvoiceModal";
 
 export default function InvoiceBar({
   productsData,
 }: {
   productsData: Product[];
 }) {
+  //Custom hoot to manage shopping cart items from cart context
   const { cartItems, emptyCart } = useItemCart();
+
+  //Calculate the total price of items in the cart
   const totalPrice = cartItems.reduce((total, cartItem) => {
     const item = productsData.find((i) => i._id === cartItem._id);
     return total + (item?.price || 0) * cartItem.quantity;
   }, 0);
+
+  //Setting up state variables
   const [time, setTime] = useState(new Date());
   const [faturaFinal, setFaturaFinal] = useState({});
-  // const [produktet, setProduktet] = useState([]);
   const finalPrice = tvshCalculator(totalPrice);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const totalInvoicePrice = formatCurrency(totalPrice, "ALL");
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
   const currentDate: Date = new Date();
   const formattedDate: string = format(currentDate, "dd MMMM yyyy");
   const formattedTime: string = format(time, "HH:mm:ss");
@@ -76,12 +83,24 @@ export default function InvoiceBar({
     }
   }, []);
 
+  //Use effect to update the time every second
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  //Function to initiate the printing process
   const startPrinting = async () => {
+    // Get the cart object from local storage
     const storedData: string | null = localStorage.getItem("items-cart");
     if (storedData === null) {
+      //Handle the case where the cart is empty
       console.log("Cart is empty");
     }
     try {
+      // Parse the cart object from local storage and get the product data from the server
       const fatura: any = JSON.parse(storedData as string);
       if (Array.isArray(fatura)) {
         const arrayofIds: string[] = fatura.map((obj: any) => obj._id);
@@ -101,6 +120,8 @@ export default function InvoiceBar({
           quantity: fatura.find((item: any) => item._id === product._id)
             .quantity,
         }));
+
+        // Construct the id list of products
         const productIDs = produkte.map((product: any) => product.id);
 
         const data = {
@@ -157,7 +178,7 @@ export default function InvoiceBar({
         <HStack alignItems={"center"}>
           <BsCart4 size={35} />
           <Heading as="h1" size="lg">
-            Fatura #{invoiceNumber}
+            Fatura #{invoiceNumber + 1}
           </Heading>
         </HStack>
         <HStack>

@@ -13,18 +13,17 @@ const USD_FORMATTER = new Intl.NumberFormat(undefined, {
   style: "currency",
 });
 
+const currencyCodeLocal = localStorage.getItem("selectedCurrency");
 
-const currencyCodeLocal = localStorage.getItem("selectedCurrency")
-
-export function formatCurrency(amount: number, currencyCode: string){
-    switch (currencyCodeLocal) {
-      case "ALL":
-        return ALL_FORMATTER.format(amount);
-      case "EUR":
-        return EUR_FORMATTER.format(amount);
-      case "USD":
-        return USD_FORMATTER.format(amount);
-      default:
-        return ALL_FORMATTER.format(amount);
-    }
+export function formatCurrency(amount: number, currencyCode: string) {
+  switch (currencyCodeLocal) {
+    case "ALL":
+      return ALL_FORMATTER.format(amount);
+    case "EUR":
+      return EUR_FORMATTER.format(amount / 100);
+    case "USD":
+      return USD_FORMATTER.format(amount / 98);
+    default:
+      return ALL_FORMATTER.format(amount);
+  }
 }

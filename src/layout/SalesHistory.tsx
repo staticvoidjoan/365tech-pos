@@ -64,10 +64,15 @@ const InvoiceItem: React.FC = () => {
   }
 
   return (
-    <Box position="relative" flex={"2"} bg={"#fbfbfb"}>
+    <Box overflowY="auto" maxHeight="100vh" w={"100%"}>
       <NavBar />
-
-      <SimpleGrid columns={{ md: 4, sm: 2 }} gap={"1rem"} padding={"2rem"}>
+      {/* Adjust maxHeight as per your needs */}
+      <SimpleGrid
+        columns={{ md: 4, sm: 2 }}
+        gap={"1rem"}
+        padding={"2rem"}
+        boxSize={"fit-content"}
+      >
         {invoices.map((invoice) => (
           <InvoiceStoryCard key={invoice._id} invoice={invoice} />
         ))}

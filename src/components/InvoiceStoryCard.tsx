@@ -11,6 +11,7 @@ import {
   HStack,
   Divider,
   Avatar,
+  Spacer,
 } from "@chakra-ui/react";
 import { formatCurrency } from "../utlities/formatCurrency";
 export default function InvoiceStoryCard({ invoice }) {
@@ -47,6 +48,12 @@ export default function InvoiceStoryCard({ invoice }) {
             </Box>
           ))}
         </VStack>
+        <HStack mt={3} gap={5} justifyContent={"flex-start"}>
+          <Text fontWeight={"bold"}>Bleresi:</Text>
+          <Spacer />
+          <Avatar size="sm" name="Joan" boxSize={"10"} />
+          <Text fontWeight={"bold"}>Joan Shameti</Text>
+        </HStack>
       </CardBody>
       <Divider />
       <CardFooter>
