@@ -242,17 +242,12 @@ export default function PaymentNumPad({
                   maxW={"400px"}
                   overflow={"hidden"}
                 >
-<<<<<<< HEAD
                   <HStack maxW={"380px"} overflow={"hidden"}>
-=======
-                  <HStack>
->>>>>>> 6e72d3515483e2062203fd40834535ffa4d91b59
                     <Text>Pagesa:</Text>
                     <Text fontWeight={"600"}>
                       {formatCurrency(parseFloat(amount) || 0)}
                     </Text>
                   </HStack>
-<<<<<<< HEAD
                   <HStack maxW={"380px"} overflow={"hidden"}>
                     <Text>Kusuri:</Text>
                     <Text
@@ -260,15 +255,6 @@ export default function PaymentNumPad({
                       fontWeight={"600"}
                     >
                       {formatCurrency(change)}
-=======
-                  <HStack>
-                    <Text>Kusuri:</Text>
-                    <Text
-                      color={change < 0 ? "red" : "green"}
-                      fontWeight={"600"}
-                    >
-                      {formatCurrency(change || 0)}
->>>>>>> 6e72d3515483e2062203fd40834535ffa4d91b59
                     </Text>
                   </HStack>
                 </Box>
