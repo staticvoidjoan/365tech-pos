@@ -1,35 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Box,
-  Spinner,
-  Center,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
+import { Box, Spinner, Center, Flex, Heading } from "@chakra-ui/react";
 import NavBar from "./NavBar";
 import InvoiceStoryCard from "../components/InvoiceStoryCard";
 import InvoiceSideBarCard from "../components/InvoiceSideBarCard";
 
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  barcode: number;
-}
-
-interface Invoice {
-  _id: string;
-  invoiceNumber: string;
-  products: Product[];
-  subtotal: number;
-  tvsh: number;
-  total: number;
-  paymentMethod: string;
-  createdAt: string;
-  updatedAt: string;
-}
+//Types and Interfaces
+import { Invoice } from "../utlities/types";
 
 const InvoiceItem: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -62,12 +39,9 @@ const InvoiceItem: React.FC = () => {
     );
   }
 
-
   return (
     <Box w={"100%"}>
-      <NavBar setProductData={function (products: any[]): void {
-        throw new Error("Function not implemented.");
-      } } />
+      <NavBar setProductData={() => {}} />
       <Flex width={"100%"} height={"calc(100vh - 7rem)"}>
         <Box overflowY="auto" maxHeight="100vh" w={"100%"} flex={1} padding={5}>
           <Heading>Historiku i Faturave</Heading>
@@ -75,7 +49,7 @@ const InvoiceItem: React.FC = () => {
             <InvoiceSideBarCard
               invoice={invoice}
               key={index}
-              setSelectedInvoice={setSelectedInvoice}
+              setSelectedInvoice={() => setSelectedInvoice(invoice as Invoice)}
             />
           ))}
         </Box>

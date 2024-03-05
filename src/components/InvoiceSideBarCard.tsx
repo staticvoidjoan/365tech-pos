@@ -10,10 +10,9 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { format } from "date-fns";
 import { Invoice } from "../utlities/types";
 
-
 interface InvoiceSideBarCardProps {
   invoice: Invoice;
-  setSelectedInvoice: (invoice: Invoice) => void;
+  setSelectedInvoice: (invoice: Invoice | null) => void;
 }
 export default function InvoiceSideBarCard({
   invoice,

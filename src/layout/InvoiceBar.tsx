@@ -26,8 +26,9 @@ import pos from "../assets/pos.svg";
 //Utils
 import { formatCurrency } from "../utlities/formatCurrency";
 import axios from "axios";
-import { format} from "date-fns";
+import { format } from "date-fns";
 import { tvshCalculator } from "../utlities/tvshCalculator";
+import { FatureData } from "../utlities/types";
 
 //Context
 import { useItemCart } from "../context/ItemCartContext";
@@ -58,7 +59,15 @@ export default function InvoiceBar({
 
   //Setting up state variables
   const [time, setTime] = useState(new Date());
-  const [faturaFinal, setFaturaFinal] = useState({});
+  const [faturaFinal, setFaturaFinal] = useState<FatureData>({
+    totalPrice: 0,
+    tvsh: 0,
+    produkte: [],
+    subtotal: 0,
+    data: "",
+    ora: "",
+    paymentMethod: "",
+  });
   const finalPrice = tvshCalculator(totalPrice);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [change, setChange] = useState(0);
@@ -136,7 +145,7 @@ export default function InvoiceBar({
         const productIDs = produkte.map((product: any) => product.id);
         setProductIds(productIDs);
 
-        const data = {
+        const data: FatureData = {
           totalPrice: totalPrice,
           tvsh: finalPrice.tvsh,
           produkte: produkte,
@@ -147,6 +156,7 @@ export default function InvoiceBar({
         };
         setFaturaFinal(data);
 
+        // totalPrice: number; tvsh: number; produkte: Product[]; subtotal: number; data: string; ora: string; paymentMethod: string; }
         onOpen();
       } else {
         console.error("Data in local storage is not an array");
