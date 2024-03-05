@@ -30,9 +30,9 @@ const nums = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const specialChars = ["Backspace", "Enter", "Escape", "Delete"];
 
 type Product = {
-  id: string;
+  _id: string;
   name: string;
-  description: string;
+  description: string | undefined;
   barcode: number;
   price: number;
   quantity: number;
@@ -54,15 +54,6 @@ interface PaymentNumPadProps {
   setFaturaChange: (change: number) => void;
   sendInvoiceData: () => void;
 }
-
-//  totalPrice: totalPrice,
-//           tvsh: finalPrice.tvsh,
-//           produkte: produkte,
-//           subtotal: finalPrice.subtotal,
-//           data: formattedDate,
-//           ora: formattedTime,
-//           paymentMethod: activeButton,
-//         };
 export default function PaymentNumPad({
   onClose,
   isOpen,
@@ -247,10 +238,18 @@ export default function PaymentNumPad({
                   fontSize="2xl"
                   flexDir={"column"}
                 >
-                  <strong>{formatCurrency(parseFloat(amount) || 0)}</strong>
+                  <HStack>
+                    <Text>Pagesa:</Text>
+                    <Text fontWeight={"600"}>
+                      {formatCurrency(parseFloat(amount) || 0)}
+                    </Text>
+                  </HStack>
                   <HStack>
                     <Text>Kusuri:</Text>
-                    <Text color={change < 0 ? "red" : "black"}>
+                    <Text
+                      color={change < 0 ? "red" : "green"}
+                      fontWeight={"600"}
+                    >
                       {formatCurrency(change || 0)}
                     </Text>
                   </HStack>

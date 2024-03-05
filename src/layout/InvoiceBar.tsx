@@ -72,6 +72,7 @@ export default function InvoiceBar({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [change, setChange] = useState(0);
   const [productIds, setProductIds] = useState([]);
+
   const {
     isOpen: isPrintOpen,
     onOpen: onPrintOpen,
@@ -131,7 +132,7 @@ export default function InvoiceBar({
         const fetchedProducts = response.data;
 
         // Construct the produkte array with product data
-        const produkte = fetchedProducts.map((product: any) => ({
+        const produkte = fetchedProducts.map((product: Product) => ({
           id: product._id,
           name: product.name,
           description: product.description,

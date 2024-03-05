@@ -116,7 +116,7 @@ export default function IneventoryItem({
           </CardBody>
           <CardFooter justifyContent="center">
             <Spacer />
-            <Button colorScheme="green" size={"lg"} gap={3} onClick={onOpen}>
+            <Button colorScheme="teal" size={"lg"} gap={3} onClick={onOpen}>
               Edit
               <BsPencil size={24} />
             </Button>
