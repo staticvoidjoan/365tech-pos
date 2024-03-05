@@ -52,7 +52,7 @@ export default function ScreenLock() {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay opacity={1}/>
         <ModalContent maxW={"700px"}>
           <ModalHeader display="flex" justifyContent={"center"}>
             <Heading>Set PIN Code</Heading>

@@ -17,7 +17,7 @@ import {
   useToast,
   InputGroup,
   InputLeftAddon,
-  Spinner,
+  // Spinner,
 } from "@chakra-ui/react";
 // import dummyData from "../data/dummyData.json";
 import axios from "axios";
@@ -28,6 +28,7 @@ import Barcode from "react-barcode";
 import { useState, useEffect } from "react";
 import IneventoryItem from "../components/InventoryItem";
 import { IoIosAdd } from "react-icons/io";
+import HashLoader from "react-spinners/HashLoader";
 export default function Inventory() {
   const products = useLoaderData() as Product[];
   const toast = useToast();
@@ -178,16 +179,15 @@ export default function Inventory() {
           </Button>
         </Flex>
         {isLoading ? (
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="teal"
-            size="xl"
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
+          <HashLoader
+            color="#319795"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+            }}
+            size={150}
           />
         ) : (
           <SimpleGrid

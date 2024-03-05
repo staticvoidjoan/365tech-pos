@@ -1,10 +1,11 @@
-import { SimpleGrid, Box, Spinner } from "@chakra-ui/react";
+import { SimpleGrid, Box } from "@chakra-ui/react";
 // import dummyData from "../data/dummyData.json";
 import ItemCard from "../components/ItemCard";
 import NavBar from "./NavBar";
 import { useLoaderData } from "react-router";
 import { Product } from "../utlities/types";
 import { useState, useEffect } from "react";
+import HashLoader from "react-spinners/HashLoader";
 export default function DashBoard() {
   const products = useLoaderData() as Product[];
   const [productData, setProductData] = useState<Product[]>([]);
@@ -13,12 +14,9 @@ export default function DashBoard() {
     setTimeout(() => {
       setProductData(products);
       setIsLoading(false); // Set loading to false once data is loaded
-    }, 500); // Adjust the loading time as needed
+    }, 1000); // Adjust the loading time as needed
   }, [products]);
 
-
-
-  
   return (
     <Box position="relative" flex={"2"} bg={"#fbfbfb"}>
       <NavBar setProductData={setProductData} />
@@ -27,16 +25,16 @@ export default function DashBoard() {
         height="calc(100vh - 7rem)" // Adjust this value according to your NavBar height
       >
         {loading ? ( // Show spinner while loading
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="teal"
-            size="xl"
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
+      
+          <HashLoader
+            color="#319795"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+            }}
+            size={150}
           />
         ) : (
           <SimpleGrid columns={{ md: 4, sm: 2 }} gap={"1rem"} padding={"2rem"}>

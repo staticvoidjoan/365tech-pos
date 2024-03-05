@@ -30,9 +30,9 @@ const nums = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const specialChars = ["Backspace", "Enter", "Escape", "Delete"];
 
 type Product = {
-  id: string;
+  _id: string;
   name: string;
-  description: string;
+  description: string | undefined;
   barcode: number;
   price: number;
   quantity: number;
@@ -54,15 +54,6 @@ interface PaymentNumPadProps {
   setFaturaChange: (change: number) => void;
   sendInvoiceData: () => void;
 }
-
-//  totalPrice: totalPrice,
-//           tvsh: finalPrice.tvsh,
-//           produkte: produkte,
-//           subtotal: finalPrice.subtotal,
-//           data: formattedDate,
-//           ora: formattedTime,
-//           paymentMethod: activeButton,
-//         };
 export default function PaymentNumPad({
   onClose,
   isOpen,
@@ -72,10 +63,14 @@ export default function PaymentNumPad({
   sendInvoiceData,
 }: PaymentNumPadProps) {
   const [amount, setAmount] = useState(""); // State to keep track of the input amount
-  const [change, setChange] = useState(0); // State to keep track of the change
+  const [change, setChange] = useState<number>(0); // State to keep track of the change
   const handleNumClick = (num: number) => {
     setAmount((prevAmount) => prevAmount + num); // Concatenate the clicked number to the existing amount
   };
+
+  useEffect(() => {
+    setChange(0);
+  }, []);
 
   const toast = useToast();
 
@@ -88,7 +83,7 @@ export default function PaymentNumPad({
     const inputAmount = parseFloat(amount);
     const changeAmount = inputAmount - data.totalPrice;
 
-    setChange(changeAmount);
+    setChange(changeAmount || 0);
     setFaturaChange(changeAmount);
   };
   useEffect(() => {
@@ -124,23 +119,21 @@ export default function PaymentNumPad({
   }, [amount]);
 
   const handlePay = () => {
-    if (isOpen) {
-      if (change < 0) {
-        toast({
-          title: "Vlera e pamjaftueshme",
-          description: "Vlera e vendosur nuk mjafton per te kryer pagesen!",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-          position: "top",
-        });
-      } else {
-        sendInvoiceData();
-        onClose();
-        openPrint();
-        setChange(0);
-        setAmount("");
-      }
+    if (change <= 0) {
+      toast({
+        title: "Vlera e pamjaftueshme",
+        description: "Vlera e vendosur nuk mjafton per te kryer pagesen!",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
+    } else if (change > 0 && isOpen) {
+      sendInvoiceData();
+      onClose();
+      openPrint();
+      setChange(0);
+      setAmount("");
     }
   };
 
@@ -246,12 +239,22 @@ export default function PaymentNumPad({
                   alignItems="center"
                   fontSize="2xl"
                   flexDir={"column"}
+                  maxW={"400px"}
+                  overflow={"hidden"}
                 >
-                  <strong>{formatCurrency(parseFloat(amount) || 0)}</strong>
-                  <HStack>
+                  <HStack maxW={"380px"} overflow={"hidden"}>
+                    <Text>Pagesa:</Text>
+                    <Text fontWeight={"600"}>
+                      {formatCurrency(parseFloat(amount) || 0)}
+                    </Text>
+                  </HStack>
+                  <HStack maxW={"380px"} overflow={"hidden"}>
                     <Text>Kusuri:</Text>
-                    <Text color={change < 0 ? "red" : "black"}>
-                      {formatCurrency(change || 0)}
+                    <Text
+                      color={change <= 0 ? "red" : "green"}
+                      fontWeight={"600"}
+                    >
+                      {formatCurrency(change)}
                     </Text>
                   </HStack>
                 </Box>

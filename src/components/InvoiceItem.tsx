@@ -31,6 +31,7 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
   }
 
   function handleEditClick() {
+    setAmount(quantity);
     setIsEditing((editing) => !editing);
   }
   function setNewAmount() {

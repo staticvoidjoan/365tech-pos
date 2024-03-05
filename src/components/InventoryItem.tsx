@@ -33,7 +33,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import axios from "axios";
-import itemFallback from "../assets/itemFallback.svg";
+import itemFallback from "../assets/itemFallback2.svg";
 import { formatCurrency } from "../utlities/formatCurrency";
 import { BsTrash } from "react-icons/bs";
 import Barcode from "react-barcode";
@@ -116,7 +116,7 @@ export default function IneventoryItem({
           </CardBody>
           <CardFooter justifyContent="center">
             <Spacer />
-            <Button colorScheme="green" size={"lg"} gap={3} onClick={onOpen}>
+            <Button colorScheme="teal" size={"lg"} gap={3} onClick={onOpen}>
               Edit
               <BsPencil size={24} />
             </Button>
@@ -176,12 +176,16 @@ export default function IneventoryItem({
                   <FormLabel>Barcode</FormLabel>
                   <Input
                     placeholder="Barcode"
-                    value={barcode ?? ''}
+                    value={barcode ?? ""}
                     name="barcode"
                     minLength={12}
                     maxLength={12}
                   />
-                  <Barcode value={barcode?.toString() ?? ''} width={1} height={40} />
+                  <Barcode
+                    value={barcode?.toString() ?? ""}
+                    width={1}
+                    height={40}
+                  />
                 </FormControl>
               </Flex>
             </ModalBody>
