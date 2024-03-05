@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardHeader,
@@ -13,10 +12,23 @@ import {
   Avatar,
   Spacer,
 } from "@chakra-ui/react";
+import QRCode from "react-qr-code";
 import { formatCurrency } from "../utlities/formatCurrency";
-export default function InvoiceStoryCard({ invoice }) {
+
+import { Invoice } from "../utlities/types";
+
+interface InvoiceStoryCardProps {
+  invoice: Invoice;
+}
+export default function InvoiceStoryCard({ invoice }: InvoiceStoryCardProps) {
   return (
-    <Card maxW="md" boxShadow={"xl"} border={"3px solid black"}>
+    <Card
+      w="600px"
+      height={"1500px"}
+      boxShadow={"xl"}
+      border={"3px solid black"}
+      maxH="800px"
+    >
       <CardHeader>
         <Text fontSize="xl" fontWeight="bold">
           Invoice Number: {invoice.invoiceNumber}
@@ -54,6 +66,9 @@ export default function InvoiceStoryCard({ invoice }) {
           <Avatar size="sm" name="Joan" boxSize={"10"} />
           <Text fontWeight={"bold"}>Joan Shameti</Text>
         </HStack>
+        <VStack mt={6}>
+          <QRCode value={JSON.stringify(invoice)} size={200} />
+        </VStack>
       </CardBody>
       <Divider />
       <CardFooter>

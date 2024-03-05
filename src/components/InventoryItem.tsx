@@ -14,10 +14,8 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
   VStack,
   Modal,
   ModalOverlay,
@@ -59,7 +57,6 @@ export default function IneventoryItem({
 }: ItemCardProps) {
   const deleteProduct = async () => {
     try {
-      // console.log(id);
       const repsonse = await axios.delete(
         `http://localhost:5000/productdelete/${id}`
       );
@@ -108,7 +105,7 @@ export default function IneventoryItem({
             <Divider />
             <HStack justify="space-between" mt={3}>
               <Text fontSize="lg" fontWeight={"bold"}>
-                {formatCurrency(price, "ALL")}
+                {formatCurrency(price)}
               </Text>
               {barcode && (
                 <Barcode value={barcode.toString()} width={1} height={40} />
@@ -179,12 +176,12 @@ export default function IneventoryItem({
                   <FormLabel>Barcode</FormLabel>
                   <Input
                     placeholder="Barcode"
-                    value={barcode}
+                    value={barcode ?? ''}
                     name="barcode"
                     minLength={12}
                     maxLength={12}
                   />
-                  <Barcode value={barcode.toString()} width={1} height={40} />
+                  <Barcode value={barcode?.toString() ?? ''} width={1} height={40} />
                 </FormControl>
               </Flex>
             </ModalBody>

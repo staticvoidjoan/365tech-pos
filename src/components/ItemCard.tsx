@@ -1,12 +1,10 @@
 import { useItemCart } from "../context/ItemCartContext";
 import {
   Card,
-  //   CardHeader,
   CardBody,
   CardFooter,
   Image,
   Button,
-  //   Heading,
   Stack,
   Text,
   HStack,
@@ -37,7 +35,7 @@ export default function ItemCard({ id, name, price }: ItemCardProps) {
           <Image src={itemFallback} width={"50%"} />
           <HStack alignContent={"space-between"}>
             <Text fontWeight={"bold"}>{name}</Text>
-            <Text color={"gray"}>{formatCurrency(price, "ALL")}</Text>
+            <Text color={"gray"}>{formatCurrency(price)}</Text>
           </HStack>
         </Stack>
       </CardBody>

@@ -15,7 +15,7 @@ const USD_FORMATTER = new Intl.NumberFormat(undefined, {
 
 const currencyCodeLocal = localStorage.getItem("selectedCurrency");
 
-export function formatCurrency(amount: number, currencyCode: string) {
+export function formatCurrency(amount: number) {
   switch (currencyCodeLocal) {
     case "ALL":
       return ALL_FORMATTER.format(amount);

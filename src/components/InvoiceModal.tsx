@@ -47,9 +47,9 @@ export default function InvoiceModal({ isOpen, onClose, data }: any) {
         : ""
     }
     -------------------------------------
-    Subtotal: ${formatCurrency(data.subtotal || 0, "ALL")}
-    TVSH 20%: ${formatCurrency(data.tvsh || 0, "ALL")}
-    Total: ${formatCurrency(data.totalPrice || 0, "ALL")}
+    Subtotal: ${formatCurrency(data.subtotal || 0)}
+    TVSH 20%: ${formatCurrency(data.tvsh || 0)}
+    Total: ${formatCurrency(data.totalPrice || 0)}
     Date: ${data.data || ""}
     Time: ${data.ora || ""}
     Payment Method: ${paymentType}
@@ -90,15 +90,15 @@ export default function InvoiceModal({ isOpen, onClose, data }: any) {
           <Table mt="5">
             <Tr>
               <Td fontWeight={"bold"}>Subtotali:</Td>
-              <Td>{formatCurrency(data.subtotal, "ALL")}</Td>
+              <Td>{formatCurrency(data.subtotal)}</Td>
             </Tr>
             <Tr>
               <Td fontWeight={"bold"}>TVSH 20%:</Td>
-              <Td>{formatCurrency(data.tvsh, "ALL")}</Td>
+              <Td>{formatCurrency(data.tvsh)}</Td>
             </Tr>
             <Tr>
               <Td fontWeight={"bold"}>Totali:</Td>
-              <Td>{formatCurrency(data.totalPrice, "ALL")}</Td>
+              <Td>{formatCurrency(data.totalPrice)}</Td>
             </Tr>
             <Tr>
               <Td fontWeight={"bold"}>Data:</Td>

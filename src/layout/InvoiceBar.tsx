@@ -10,6 +10,7 @@ import {
   Image,
   Badge,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react"; //Chakra ui imports
 import {
   BsCash,
@@ -25,7 +26,7 @@ import pos from "../assets/pos.svg";
 //Utils
 import { formatCurrency } from "../utlities/formatCurrency";
 import axios from "axios";
-import { format, sub } from "date-fns";
+import { format} from "date-fns";
 import { tvshCalculator } from "../utlities/tvshCalculator";
 
 //Context
@@ -39,6 +40,7 @@ import { Product } from "../utlities/types";
 //Components
 import { InvoiceItem } from "../components/InvoiceItem";
 import InvoiceModal from "../components/InvoiceModal";
+import PaymentNumPad from "../components/PaymentNumPad";
 
 export default function InvoiceBar({
   productsData,
@@ -59,10 +61,18 @@ export default function InvoiceBar({
   const [faturaFinal, setFaturaFinal] = useState({});
   const finalPrice = tvshCalculator(totalPrice);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const totalInvoicePrice = formatCurrency(totalPrice, "ALL");
+  const [change, setChange] = useState(0);
+  const [productIds, setProductIds] = useState([]);
+  const {
+    isOpen: isPrintOpen,
+    onOpen: onPrintOpen,
+    onClose: OnPrintClose,
+  } = useDisclosure();
+  const totalInvoicePrice = formatCurrency(totalPrice);
   const currentDate: Date = new Date();
   const formattedDate: string = format(currentDate, "dd MMMM yyyy");
   const formattedTime: string = format(time, "HH:mm:ss");
+  const toast = useToast();
   const [invoiceNumber, setInvoiceNumber] = useLocalStorage<number>(
     "invoiceNumber",
     1
@@ -110,6 +120,7 @@ export default function InvoiceBar({
 
         // setProduktet(response.data);
         const fetchedProducts = response.data;
+
         // Construct the produkte array with product data
         const produkte = fetchedProducts.map((product: any) => ({
           id: product._id,
@@ -123,6 +134,7 @@ export default function InvoiceBar({
 
         // Construct the id list of products
         const productIDs = produkte.map((product: any) => product.id);
+        setProductIds(productIDs);
 
         const data = {
           totalPrice: totalPrice,
@@ -133,32 +145,47 @@ export default function InvoiceBar({
           ora: formattedTime,
           paymentMethod: activeButton,
         };
-        console.log(data);
-
-        const faturaCloud = {
-          invoiceNumber: `${formattedDate}-${invoiceNumber}`,
-          products: productIDs,
-          subtotal: finalPrice.subtotal,
-          tvsh: finalPrice.tvsh,
-          total: totalPrice,
-          paymentMethod: activeButton,
-        };
-        console.log(faturaCloud);
-        const responseCloud = await axios.post(
-          "http://localhost:5000/invoices",
-          faturaCloud
-        );
-        console.log(responseCloud);
-
         setFaturaFinal(data);
-        setInvoiceNumber((currVal) => currVal + 1);
+
         onOpen();
-        emptyCart();
       } else {
         console.error("Data in local storage is not an array");
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const sendInvoiceData = async () => {
+    const faturaCloud = {
+      invoiceNumber: `${formattedDate}-#${invoiceNumber}`,
+      products: productIds,
+      subtotal: finalPrice.subtotal,
+      tvsh: finalPrice.tvsh,
+      total: totalPrice,
+      paymentMethod: activeButton,
+      change: change,
+    };
+
+    try {
+      await axios.post("http://localhost:5000/invoices", faturaCloud);
+      setInvoiceNumber((currVal) => currVal + 1);
+      emptyCart();
+      toast({
+        title: "Pagesa e sukseshme",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
+    } catch (error) {
+      toast({
+        title: "Dicka shkoi keq",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
     }
   };
 
@@ -173,7 +200,19 @@ export default function InvoiceBar({
       maxH={"100vh"}
       gap={5}
     >
-      <InvoiceModal isOpen={isOpen} onClose={onClose} data={faturaFinal} />
+      <InvoiceModal
+        isOpen={isPrintOpen}
+        onClose={OnPrintClose}
+        data={faturaFinal}
+      />
+      <PaymentNumPad
+        isOpen={isOpen}
+        onClose={onClose}
+        data={faturaFinal}
+        openPrint={onPrintOpen}
+        setFaturaChange={setChange}
+        sendInvoiceData={sendInvoiceData}
+      />
       <VStack align="flex-start" marginBottom="4">
         <HStack alignItems={"center"}>
           <BsCart4 size={35} />
@@ -239,10 +278,10 @@ export default function InvoiceBar({
             Total:<span style={{ color: "teal" }}>{totalInvoicePrice}</span>{" "}
           </Heading>
           <Heading size={"sm"}>
-            Subtotal: {formatCurrency(finalPrice.subtotal, "ALL") || 0}
+            Subtotal: {formatCurrency(finalPrice.subtotal) || 0}
           </Heading>
           <Text size={"sm"} color={"gray.500"}>
-            TVSH(20%): {formatCurrency(finalPrice.tvsh, "ALL") || 0}
+            TVSH(20%): {formatCurrency(finalPrice.tvsh) || 0}
           </Text>
           <Heading size={"md"}>Pagesa:</Heading>
           <HStack justifyContent={"center"} gap={5}>
@@ -284,7 +323,7 @@ export default function InvoiceBar({
           onClick={startPrinting}
         >
           <Text fontSize={"1.8rem"} fontWeight={"bold"}>
-            Printo
+            Pagesë
           </Text>
           <Image src={pos} width={"8%"} />
         </Button>

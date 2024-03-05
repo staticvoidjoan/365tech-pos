@@ -1,6 +1,5 @@
 import { useItemCart } from "../context/ItemCartContext";
 import { formatCurrency } from "../utlities/formatCurrency";
-// import dummyData from "../data/dummyData.json";
 import {
   Button,
   Image,
@@ -95,9 +94,9 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
               </Text>
               {quantity >= 1 && editableQuantity}
             </HStack>
-            <Text fontSize="md">{formatCurrency(item.price, "ALL")}</Text>
+            <Text fontSize="md">{formatCurrency(item.price)}</Text>
             <Text fontSize="lg" fontWeight="bold">
-              {formatCurrency(totalPrice, "ALL")}
+              {formatCurrency(totalPrice)}
             </Text>
           </Box>
 

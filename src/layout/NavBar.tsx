@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   HStack,
-  Heading,
   Image,
   Input,
   InputGroup,
@@ -16,6 +15,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import SideBar from "./SideBar";
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 // import { searchProductByName } from "./your-api-file-path"; // Update the path accordingly
 import axios from "axios";
 import logo from "../assets/logo.png";
@@ -31,10 +31,11 @@ export default function NavBar({
   const [selectedCurrency, setSelectedCurrency] = useState<string>(
     localStorage.getItem("selectedCurrency") || "ALL"
   );
-
+  const location = useLocation();
+  const isSaleHistory = location.pathname === "/invoices";
   useEffect(() => {
     localStorage.setItem("selectedCurrency", selectedCurrency);
-  }, [selectedCurrency,]);
+  }, [selectedCurrency]);
 
   const handleSearch = async () => {
     try {
@@ -62,24 +63,28 @@ export default function NavBar({
             <HamburgerIcon />
           </Button>
         </HStack>
-
-        <InputGroup maxW={"500px"} alignItems={"center"}>
-          <InputLeftAddon onClick={handleSearch} style={{ cursor: "pointer" }}>
-            <SearchIcon />
-          </InputLeftAddon>
-          <Input
-            variant={"filled"}
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
-          />
-        </InputGroup>
+        {isSaleHistory ? null : (
+          <InputGroup maxW={"500px"} alignItems={"center"}>
+            <InputLeftAddon
+              onClick={handleSearch}
+              style={{ cursor: "pointer" }}
+            >
+              <SearchIcon />
+            </InputLeftAddon>
+            <Input
+              variant={"filled"}
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
+            />
+          </InputGroup>
+        )}
         <Spacer />
         <HStack>
           <MdCurrencyExchange size={35} />
