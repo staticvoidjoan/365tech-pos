@@ -226,19 +226,19 @@ export default function InvoiceBar({
       />
       <VStack align="flex-start" marginBottom="4">
         <HStack alignItems={"center"}>
-          <BsCart4 size={35} />
-          <Heading as="h1" size="lg">
+          <BsCart4 size={25} />
+          <Heading as="h1" size="md">
             Fatura #{invoiceNumber + 1}
           </Heading>
         </HStack>
         <HStack>
-          <Text fontSize="1.5rem" fontWeight={"bold"}>
+          <Text size="md" fontWeight={"bold"}>
             {formattedDate}
           </Text>
           <Badge
             variant="outline"
             colorScheme="green"
-            fontSize={"1rem"}
+            fontSize={"0.9rem"}
             borderRadius={"8px"}
             px={2}
           >
@@ -251,7 +251,6 @@ export default function InvoiceBar({
         overflow={"auto"}
         p={10}
         border={"3px solid #2D3748"}
-        // border={`${cartItems.length === 0 ? "3px solid #2D3748" : "none"}`}
         height={"100%"}
         borderRadius={"1rem"}
       >
@@ -264,7 +263,6 @@ export default function InvoiceBar({
           />
         ))}
       </Stack>
-      <Spacer />
       <Button
         colorScheme="red"
         height={"fit-content"}
@@ -272,12 +270,15 @@ export default function InvoiceBar({
         borderRadius={20}
         onClick={() => emptyCart()}
         gap={3}
+        fontSize={"1rem"}
+        
       >
         Empty Cart
-        <BsTrash size={34} />
+        <BsTrash size={20} />
       </Button>
       <Stack>
         <Stack
+        
           bg={"gray.300"}
           boxShadow={"xl"}
           color={"white"}
@@ -285,7 +286,7 @@ export default function InvoiceBar({
           mb={5}
           borderRadius={"2rem"}
         >
-          <Heading>
+          <Heading size={"lg"}>
             Total:<span style={{ color: "teal" }}>{totalInvoicePrice}</span>{" "}
           </Heading>
           <Heading size={"sm"}>
@@ -294,47 +295,50 @@ export default function InvoiceBar({
           <Text size={"sm"} color={"gray.500"}>
             TVSH(20%): {formatCurrency(finalPrice.tvsh) || 0}
           </Text>
-          <Heading size={"md"}>Pagesa:</Heading>
-          <HStack justifyContent={"center"} gap={5}>
-            <Button
-              colorScheme={activeButton === "cash" ? "teal" : "gray"}
-              width={"5rem"}
-              height={"5rem"}
-              borderRadius={"1rem"}
-              onClick={() => handleButtonClick("cash")}
-            >
-              <BsCash style={{ width: "4rem", height: "4rem" }} />
-            </Button>
-            <Button
-              colorScheme={activeButton === "creditCard" ? "teal" : "gray"}
-              width={"5rem"}
-              height={"5rem"}
-              borderRadius={"1rem"}
-              onClick={() => handleButtonClick("creditCard")}
-            >
-              <BsCreditCard style={{ width: "4rem", height: "4rem" }} />
-            </Button>
-            <Button
-              colorScheme={activeButton === "crypto" ? "teal" : "gray"}
-              width={"5rem"}
-              height={"5rem"}
-              borderRadius={"1rem"}
-              onClick={() => handleButtonClick("crypto")}
-            >
-              <BsCurrencyBitcoin style={{ width: "4rem", height: "4rem" }} />
-            </Button>
+          <HStack>
+            <Heading size={"md"}>Pagesa:</Heading>
+            <HStack justifyContent={"center"} gap={2}>
+              <Button
+                colorScheme={activeButton === "cash" ? "teal" : "gray"}
+                width={"3rem"}
+                height={"3rem"}
+                borderRadius={"1rem"}
+                onClick={() => handleButtonClick("cash")}
+              >
+                <BsCash style={{ width: "4rem", height: "4rem" }} />
+              </Button>
+              <Button
+                colorScheme={activeButton === "creditCard" ? "teal" : "gray"}
+                width={"3rem"}
+                height={"3rem"}
+                borderRadius={"1rem"}
+                onClick={() => handleButtonClick("creditCard")}
+              >
+                <BsCreditCard style={{ width: "4rem", height: "4rem" }} />
+              </Button>
+              <Button
+                colorScheme={activeButton === "crypto" ? "teal" : "gray"}
+                width={"3rem"}
+                height={"3rem"}
+                borderRadius={"1rem"}
+                onClick={() => handleButtonClick("crypto")}
+              >
+                <BsCurrencyBitcoin style={{ width: "4rem", height: "4rem" }} />
+              </Button>
+            </HStack>
           </HStack>
         </Stack>
         <Button
-          width={"100%"}
-          height="5rem"
+          // width={"100%"}
+          // height="5rem"
+          h={"3.5rem"}
           borderRadius={"1rem"}
           colorScheme="teal"
           gap={"1rem"}
           onClick={startPrinting}
         >
-          <Text fontSize={"1.8rem"} fontWeight={"bold"}>
-            Pagesë
+          <Text fontSize={"1rem"} fontWeight={"bold"}>
+            Lesho
           </Text>
           <Image src={pos} width={"8%"} />
         </Button>

@@ -11,7 +11,7 @@ export default function RootLayout() {
   const products = useLoaderData() as Product[];
   return (
     <Flex as={"main"} minH={"100vh"}>
-      <ScreenLock />
+      {/* <ScreenLock /> */}
       <Outlet />
       {isRootPath && <InvoiceBar productsData={products} />}
     </Flex>

@@ -28,32 +28,17 @@ import { formatCurrency } from "../utlities/formatCurrency";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 const nums = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const specialChars = ["Backspace", "Enter", "Escape", "Delete"];
-
-type Product = {
-  _id: string;
-  name: string;
-  description: string | undefined;
-  barcode: number;
-  price: number;
-  quantity: number;
-};
+import { FatureData } from "../utlities/types";
 
 interface PaymentNumPadProps {
   onClose: () => void;
   isOpen: boolean;
-  data: {
-    totalPrice: number;
-    tvsh: number;
-    produkte: Product[];
-    subtotal: number;
-    data: string;
-    ora: string;
-    paymentMethod: string;
-  };
+  data: FatureData;
   openPrint: () => void;
   setFaturaChange: (change: number) => void;
   sendInvoiceData: () => void;
 }
+
 export default function PaymentNumPad({
   onClose,
   isOpen,

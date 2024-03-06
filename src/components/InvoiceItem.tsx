@@ -13,7 +13,7 @@ import itemFallback from "../assets/itemFallback.svg";
 import Transition from "../Transition";
 import { Product } from "../utlities/types";
 import { useState } from "react";
-import { BsPencil } from "react-icons/bs";
+import { BsPencil, BsTrash } from "react-icons/bs";
 import { IoIosCheckmark } from "react-icons/io";
 type InvoiceItemProps = {
   id: string;
@@ -56,6 +56,7 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
           value={amount}
           onChange={(e) => setAmount(parseInt(e.target.value))}
           maxW={"60px"}
+          maxH={"30px"}
           border={"1px solid black"}
           _hover={{ border: "1px solid black" }}
           onKeyPress={(e) => {
@@ -82,7 +83,7 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
       >
         <Image
           src={itemFallback}
-          boxSize="80px"
+          boxSize="65px"
           borderRadius="md"
           marginRight="4"
         />
@@ -90,13 +91,13 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
         <Flex flex="1" justifyContent="space-between" alignItems="center">
           <Box>
             <HStack>
-              <Text fontSize="lg" fontWeight="bold">
+              <Text fontSize="md" fontWeight="bold">
                 {item.name}
               </Text>
               {quantity >= 1 && editableQuantity}
             </HStack>
-            <Text fontSize="md">{formatCurrency(item.price)}</Text>
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="sm">{formatCurrency(item.price)}</Text>
+            <Text fontSize="md" fontWeight="bold">
               {formatCurrency(totalPrice)}
             </Text>
           </Box>
@@ -106,7 +107,7 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
             colorScheme="red"
             size="sm"
           >
-            Remove
+            <BsTrash size={20}/>
           </Button>
         </Flex>
       </Box>
