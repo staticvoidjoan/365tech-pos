@@ -6,7 +6,15 @@ import {
   Heading,
   HStack,
   VStack,
-  Spacer,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  // PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  // PopoverAnchor,
   Image,
   Badge,
   useDisclosure,
@@ -19,7 +27,8 @@ import {
   BsTrash,
   BsCart4,
 } from "react-icons/bs"; //Icon imports
-
+import { RiCoupon2Line } from "react-icons/ri";
+import { IoPricetag } from "react-icons/io5";
 //Asset imports
 import pos from "../assets/pos.svg";
 
@@ -263,23 +272,72 @@ export default function InvoiceBar({
           />
         ))}
       </Stack>
-      <Button
-        colorScheme="red"
-        height={"fit-content"}
-        padding={3}
-        borderRadius={20}
-        onClick={() => emptyCart()}
-        gap={3}
-        fontSize={"1rem"}
-        
-      >
-        Empty Cart
-        <BsTrash size={20} />
-      </Button>
+      <HStack justify={"center"}>
+        <Button
+          flex={1}
+          colorScheme="red"
+          height={"fit-content"}
+          padding={3}
+          borderRadius={20}
+          onClick={() => emptyCart()}
+          gap={3}
+          fontSize={"1rem"}
+        >
+          Pastro Shportën
+          <BsTrash size={20} />
+        </Button>
+        <Popover>
+          <PopoverTrigger>
+            <Button
+              flex={1}
+              colorScheme="teal"
+              height={"fit-content"}
+              padding={3}
+              borderRadius={20}
+              gap={3}
+              fontSize={"1rem"}
+            >
+              Edito Totalin
+              <IoPricetag size={20} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>Confirmation! TOTal</PopoverHeader>
+            <PopoverBody>
+              Are you sure you want to have that milkshake?
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+        <Popover>
+          <PopoverTrigger>
+            <Button
+              flex={1}
+              colorScheme="teal"
+              height={"fit-content"}
+              padding={3}
+              borderRadius={20}
+              gap={3}
+              fontSize={"1rem"}
+            >
+              Apliko Kupon
+              <RiCoupon2Line size={20} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>Confirmation!</PopoverHeader>
+            <PopoverBody>
+              Are you sure you want to have that milkshake?
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      </HStack>
       <Stack>
         <Stack
-        
-          bg={"gray.300"}
+          bg={"#2d3748"}
           boxShadow={"xl"}
           color={"white"}
           padding={5}
@@ -303,12 +361,16 @@ export default function InvoiceBar({
                 width={"3rem"}
                 height={"3rem"}
                 borderRadius={"1rem"}
+                border={activeButton === "cash" ? "2px solid white" : "none"}
                 onClick={() => handleButtonClick("cash")}
               >
                 <BsCash style={{ width: "4rem", height: "4rem" }} />
               </Button>
               <Button
                 colorScheme={activeButton === "creditCard" ? "teal" : "gray"}
+                border={
+                  activeButton === "creditCard" ? "2px solid white" : "none"
+                }
                 width={"3rem"}
                 height={"3rem"}
                 borderRadius={"1rem"}
@@ -318,6 +380,7 @@ export default function InvoiceBar({
               </Button>
               <Button
                 colorScheme={activeButton === "crypto" ? "teal" : "gray"}
+                border={activeButton === "crypto" ? "2px solid white" : "none"}
                 width={"3rem"}
                 height={"3rem"}
                 borderRadius={"1rem"}
@@ -329,8 +392,6 @@ export default function InvoiceBar({
           </HStack>
         </Stack>
         <Button
-          // width={"100%"}
-          // height="5rem"
           h={"3.5rem"}
           borderRadius={"1rem"}
           colorScheme="teal"
@@ -338,7 +399,7 @@ export default function InvoiceBar({
           onClick={startPrinting}
         >
           <Text fontSize={"1rem"} fontWeight={"bold"}>
-            Lesho
+            Lësho Faturë
           </Text>
           <Image src={pos} width={"8%"} />
         </Button>

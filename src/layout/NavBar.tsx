@@ -54,7 +54,14 @@ export default function NavBar({
   return (
     <>
       <SideBar isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
-      <Flex as="nav" p={5} bg={"gray.200"} gap={"5rem"} alignItems={"center"}>
+      <Flex
+        as="nav"
+        p={5}
+        bg={"gray.200"}
+        gap={"5rem"}
+        alignItems={"center"}
+        maxH={"100px"}
+      >
         <HStack>
           <NavLink to={"/"} style={{ width: "70%", padding: 5 }}>
             <Image src={logo} />
@@ -90,7 +97,7 @@ export default function NavBar({
           <MdCurrencyExchange size={35} />
           <Select
             color={"black"}
-            maxW={"150px"}
+            // maxW={"180px"}
             value={selectedCurrency}
             variant={"filled"}
             onChange={(e) => setSelectedCurrency(e.target.value)}

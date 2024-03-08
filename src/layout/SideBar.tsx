@@ -21,6 +21,7 @@ export default function SideBar({
   onClose: any;
   btnRef: any;
 }) {
+  const hoverEffect = { borderBottom: "solid 1px #2d3748" };
   return (
     <Drawer
       isOpen={isOpen}
@@ -31,25 +32,19 @@ export default function SideBar({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>365Tech.POS</DrawerHeader>
+        <DrawerHeader>365Tech POS</DrawerHeader>
         <DrawerBody gap={"2rem"}>
-          <List fontSize={"1.5rem"} fontWeight={"400"} spacing={5} mt={5}>
+          <List fontSize={"1.2rem"} fontWeight={"400"} spacing={5} mt={5}>
             <ListItem>
               <NavLink to={"/"}>
-                <Text
-                  _hover={{ borderBottom: "solid 1px black" }}
-                  w={"fit-content"}
-                >
+                <Text _hover={hoverEffect} w={"fit-content"}>
                   Dashboard
                 </Text>
               </NavLink>
             </ListItem>
             <ListItem>
               <NavLink to={"/inventory"}>
-                <Text
-                  _hover={{ borderBottom: "solid 1px black" }}
-                  w={"fit-content"}
-                >
+                <Text _hover={hoverEffect} w={"fit-content"}>
                   Inventari
                 </Text>
               </NavLink>
@@ -57,7 +52,7 @@ export default function SideBar({
             <ListItem>
               <NavLink to={"/invoices"}>
                 <Text
-                  _hover={{ borderBottom: "solid 1px black" }}
+                  _hover={hoverEffect}
                   whiteSpace={"nowrap"}
                   w={"fit-content"}
                 >
@@ -67,10 +62,7 @@ export default function SideBar({
             </ListItem>
             <ListItem>
               <NavLink to={"/"}>
-                <Text
-                  _hover={{ borderBottom: "solid 1px black" }}
-                  w={"fit-content"}
-                >
+                <Text _hover={hoverEffect} w={"fit-content"}>
                   Klientet
                 </Text>
               </NavLink>

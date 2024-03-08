@@ -74,8 +74,8 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
   return (
     <Transition>
       <Box
-        border="1px solid #2D3748"
-        borderRadius="md"
+        border="2px solid #2d3748"
+        borderRadius="1.5rem"
         padding={5}
         marginBottom="2"
         display="flex"
@@ -107,7 +107,7 @@ export function InvoiceItem({ id, quantity, productData }: InvoiceItemProps) {
             colorScheme="red"
             size="sm"
           >
-            <BsTrash size={20}/>
+            <BsTrash size={20} />
           </Button>
         </Flex>
       </Box>

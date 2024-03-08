@@ -9,7 +9,7 @@ import {
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { format } from "date-fns";
 import { Invoice } from "../utlities/types";
-
+import { formatCurrency } from "../utlities/formatCurrency";
 interface InvoiceSideBarCardProps {
   invoice: Invoice;
   setSelectedInvoice: (invoice: Invoice | null) => void;
@@ -22,24 +22,27 @@ export default function InvoiceSideBarCard({
 
   return (
     <Card
+      maxW={"md"}
       mb={5}
       shadow={"lg"}
       direction={{ base: "column", sm: "row" }}
+      border={"1px solid black"}
       overflow="hidden"
       variant="outline"
       onClick={() => setSelectedInvoice(invoice)}
       _hover={{ bg: "gray.100", cursor: "pointer" }}
     >
-      <LiaFileInvoiceDollarSolid size={100} />
-      <Stack>
-        <CardBody>
-          <Heading size="md">{invoice.invoiceNumber}</Heading>
-          <Text py="2">Total: {invoice.total}</Text>
-        </CardBody>
-        <CardFooter>
-          <Text>{formattedData}</Text>
-        </CardFooter>
+      <Stack justify={"center"}>
+        <LiaFileInvoiceDollarSolid size={50} />
       </Stack>
+
+      <CardBody>
+        <Heading size="sm">{invoice.invoiceNumber}</Heading>
+        <Text py="2"><strong>Total:</strong> {formatCurrency(invoice.total)}</Text>
+      </CardBody>
+      <CardFooter>
+        <Text>{formattedData}</Text>
+      </CardFooter>
     </Card>
   );
 }

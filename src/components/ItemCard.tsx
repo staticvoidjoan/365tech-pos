@@ -3,7 +3,7 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Image,
+  // Image,
   Button,
   Stack,
   Text,
@@ -11,8 +11,9 @@ import {
   Divider,
   // Flex,
 } from "@chakra-ui/react";
-import itemFallback from "../assets/itemFallback.svg";
+// import itemFallback from "../assets/itemFallback.svg";
 import { formatCurrency } from "../utlities/formatCurrency";
+import Barcode from "react-barcode";
 // import { BsTrash } from "react-icons/bs";
 // import { useState } from "react";
 
@@ -39,16 +40,25 @@ export default function ItemCard({ id, name, price }: ItemCardProps) {
       borderRadius={"50px"}
       bg={"gray.100"}
       shadow={"xl"}
+      overflow={"hidden"}
       m={1}
     >
-      <CardBody>
+      <CardBody bg={"teal"} overflow={"hidden"} borderBottom={"2rpx solid black"}>
         <Stack mt={4} spacing={3} alignItems={"center"}>
-          <Image src={itemFallback} width={"40%"} />
-          <HStack justifyContent="space-between" width={"100%"}>
-            <Text fontWeight={"bold"} fontSize={"0.8rem"}>
+          {/* <Image src={itemFallback} width={"40%"} /> */}
+          <Barcode
+            value={name}
+            width={0.8}
+            height={30}
+            background="transparent"
+            fontSize={18}
+            lineColor="white"
+          />
+          <HStack justifyContent="center" width={"100%"}>
+            {/* <Text fontWeight={"bold"} fontSize={"0.8rem"}>
               {name}
-            </Text>
-            <Text color={"gray"} fontSize={"0.8rem"}>
+            </Text> */}
+            <Text color={"white"} fontWeight={"semibold"} fontSize={"1rem"}>
               {formatCurrency(price)}
             </Text>
           </HStack>
@@ -63,7 +73,7 @@ export default function ItemCard({ id, name, price }: ItemCardProps) {
             fontSize={"0.8rem"}
             size={"sm"}
           >
-            Add to cart
+            Shto ne shportë
           </Button>
         ) : (
           // <Flex alignItems={"center"} flexDir={"column"} gap={".5rem"}>

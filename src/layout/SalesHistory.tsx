@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Spinner, Center, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import NavBar from "./NavBar";
 import InvoiceStoryCard from "../components/InvoiceStoryCard";
 import InvoiceSideBarCard from "../components/InvoiceSideBarCard";
 
 //Types and Interfaces
 import { Invoice } from "../utlities/types";
+import HashLoader from "react-spinners/HashLoader";
 
 const InvoiceItem: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -31,37 +32,50 @@ const InvoiceItem: React.FC = () => {
     fetchInvoices();
   }, []);
 
-  if (loading) {
-    return (
-      <Center height="100vh">
-        <Spinner size="xl" />
-      </Center>
-    );
-  }
-
   return (
     <Box w={"100%"}>
       <NavBar setProductData={() => {}} />
-      <Flex width={"100%"} height={"calc(100vh - 7rem)"}>
-        <Box overflowY="auto" maxHeight="100vh" w={"100%"} flex={1} padding={5}>
-          <Heading>Historiku i Faturave</Heading>
-          {invoices.map((invoice, index) => (
-            <InvoiceSideBarCard
-              invoice={invoice}
-              key={index}
-              setSelectedInvoice={() => setSelectedInvoice(invoice as Invoice)}
-            />
-          ))}
-        </Box>
-        <Flex
-          flex={2}
-          justifyContent={"center"}
-          alignContent={"center"}
-          alignItems={"center"}
-        >
-          <InvoiceStoryCard invoice={selectedInvoice as Invoice} />
+      {loading ? (
+        <HashLoader
+          color="#319795"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+          size={150}
+        />
+      ) : (
+        <Flex width={"100%"} height={"calc(100vh - 7rem)"}>
+          <Box
+            overflowY="auto"
+            maxHeight="100vh"
+            maxW={"500px"}
+            flex={1}
+            padding={5}
+          >
+            <Heading fontSize={"xl"}>Historiku i Faturave</Heading>
+            {invoices.map((invoice, index) => (
+              <InvoiceSideBarCard
+                invoice={invoice}
+                key={index}
+                setSelectedInvoice={() =>
+                  setSelectedInvoice(invoice as Invoice)
+                }
+              />
+            ))}
+          </Box>
+          <Flex
+            flex={2}
+            justifyContent={"center"}
+            alignContent={"center"}
+            alignItems={"center"}
+          >
+            <InvoiceStoryCard invoice={selectedInvoice as Invoice} />
+          </Flex>
         </Flex>
-      </Flex>
+      )}
     </Box>
   );
 };
