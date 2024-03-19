@@ -67,7 +67,7 @@ export default function InvoiceBar({
   }, 0);
 
   //Setting up state variables
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date>(new Date());
   const [faturaFinal, setFaturaFinal] = useState<FatureData>({
     totalPrice: 0,
     tvsh: 0,

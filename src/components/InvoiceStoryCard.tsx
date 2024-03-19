@@ -9,7 +9,7 @@ import {
   Box,
   HStack,
   Divider,
-  Avatar,
+  Avatar,n
 } from "@chakra-ui/react";
 import QRCode from "react-qr-code";
 import { formatCurrency } from "../utlities/formatCurrency";

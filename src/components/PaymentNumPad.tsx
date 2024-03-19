@@ -104,7 +104,7 @@ export default function PaymentNumPad({
   }, [amount]);
 
   const handlePay = () => {
-    if (change <= 0) {
+    if (change <= 0 && isOpen) {
       toast({
         title: "Vlera e pamjaftueshme",
         description: "Vlera e vendosur nuk mjafton per te kryer pagesen!",

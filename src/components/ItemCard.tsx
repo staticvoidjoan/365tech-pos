@@ -72,6 +72,7 @@ export default function ItemCard({ id, name, price }: ItemCardProps) {
             colorScheme="teal"
             fontSize={"0.8rem"}
             size={"sm"}
+            borderRadius={"xl"}
           >
             Shto ne shportë
           </Button>

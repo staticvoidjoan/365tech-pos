@@ -15,11 +15,10 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import SideBar from "./SideBar";
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
-// import { searchProductByName } from "./your-api-file-path"; // Update the path accordingly
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../assets/logo.png";
-import { NavLink } from "react-router-dom";
+
 export default function NavBar({
   setProductData,
 }: {
@@ -28,11 +27,14 @@ export default function NavBar({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+
   const [selectedCurrency, setSelectedCurrency] = useState<string>(
     localStorage.getItem("selectedCurrency") || "ALL"
   );
   const location = useLocation();
+  const navigate = useNavigate();
   const isSaleHistory = location.pathname === "/invoices";
+  const isHomeHistory = location.pathname === "/";
   useEffect(() => {
     localStorage.setItem("selectedCurrency", selectedCurrency);
   }, [selectedCurrency]);
@@ -51,6 +53,10 @@ export default function NavBar({
     }
   };
 
+  const navigateHome = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <SideBar isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
@@ -63,9 +69,13 @@ export default function NavBar({
         maxH={"100px"}
       >
         <HStack>
-          <NavLink to={"/"} style={{ width: "70%", padding: 5 }}>
-            <Image src={logo} />
-          </NavLink>
+          <Image
+            src={logo}
+            w={isHomeHistory ? "70%" : "50%"} 
+            onClick={navigateHome}
+            cursor={"pointer"}
+          />
+
           <Button ref={btnRef} onClick={onOpen}>
             <HamburgerIcon />
           </Button>
@@ -100,6 +110,7 @@ export default function NavBar({
             // maxW={"180px"}
             value={selectedCurrency}
             variant={"filled"}
+            width={"90px"}
             onChange={(e) => setSelectedCurrency(e.target.value)}
           >
             <option value="ALL">ALL</option>
